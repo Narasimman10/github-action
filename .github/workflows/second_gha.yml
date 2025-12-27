@@ -10,5 +10,5 @@
         steps:
           - name: Checkout repository
             uses: actions/checkout@v2
-          - name: check FS allocation
+          - name: check hostname
             run: hostname
