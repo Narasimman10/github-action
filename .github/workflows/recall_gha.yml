@@ -17,13 +17,13 @@ jobs:
           if: success()
           uses: dawidd6/action-send-mail@v3
           with:
-            server_address: ${{ secrets.EMAIL_SERVER }}
-            server_port: ${{ secrets.EMAIL_PORT }}
+            server_address: smtp.gmail.com
+            server_port: 465
             username: ${{ secrets.EMAIL_USERNAME }}
             password: ${{ secrets.EMAIL_PASSWORD }}
             subject: '✅ Workflow Completed Successfully'
             to: ${{ secrets.EMAIL_TO }}
-            from: ${{ secrets.EMAIL_FROM }}
+            from: ${{ secrets.EMAIL_USERNAME }}
             body: |
               Workflow: ${{ github.workflow }}
               Status: SUCCESS ✅
@@ -36,13 +36,13 @@ jobs:
           if: failure()
           uses: dawidd6/action-send-mail@v3
           with:
-            server_address: ${{ secrets.EMAIL_SERVER }}
-            server_port: ${{ secrets.EMAIL_PORT }}
+            server_address: smtp.gmail.com
+            server_port: 465
             username: ${{ secrets.EMAIL_USERNAME }}
             password: ${{ secrets.EMAIL_PASSWORD }}
             subject: '❌ Workflow Failed'
             to: ${{ secrets.EMAIL_TO }}
-            from: ${{ secrets.EMAIL_FROM }}
+            from: ${{ secrets.EMAIL_USERNAME }}
             body: |
               Workflow: ${{ github.workflow }}
               Status: FAILED ❌
@@ -50,3 +50,4 @@ jobs:
               Branch: ${{ github.ref_name }}
               Commit: ${{ github.sha }}
               Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+              
