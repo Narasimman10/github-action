@@ -12,3 +12,41 @@ jobs:
         
         - name: welcome
           run: echo "Vaa Arunachalum nee thirumba Varuva nu theriyum"
+        
+        - name: Send mail on success
+          if: success()
+          uses: dawidd6/action-send-mail@v3
+          with:
+            server_address: ${{ secrets.EMAIL_SERVER }}
+            server_port: ${{ secrets.EMAIL_PORT }}
+            username: ${{ secrets.EMAIL_USERNAME }}
+            password: ${{ secrets.EMAIL_PASSWORD }}
+            subject: '✅ Workflow Completed Successfully'
+            to: ${{ secrets.EMAIL_TO }}
+            from: ${{ secrets.EMAIL_FROM }}
+            body: |
+              Workflow: ${{ github.workflow }}
+              Status: SUCCESS ✅
+              Repository: ${{ github.repository }}
+              Branch: ${{ github.ref_name }}
+              Commit: ${{ github.sha }}
+              Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+        - name: Send mail on failure
+          if: failure()
+          uses: dawidd6/action-send-mail@v3
+          with:
+            server_address: ${{ secrets.EMAIL_SERVER }}
+            server_port: ${{ secrets.EMAIL_PORT }}
+            username: ${{ secrets.EMAIL_USERNAME }}
+            password: ${{ secrets.EMAIL_PASSWORD }}
+            subject: '❌ Workflow Failed'
+            to: ${{ secrets.EMAIL_TO }}
+            from: ${{ secrets.EMAIL_FROM }}
+            body: |
+              Workflow: ${{ github.workflow }}
+              Status: FAILED ❌
+              Repository: ${{ github.repository }}
+              Branch: ${{ github.ref_name }}
+              Commit: ${{ github.sha }}
+              Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
