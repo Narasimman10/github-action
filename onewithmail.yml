@@ -54,4 +54,4 @@ jobs:
                       Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             - name: Notification
-              run: echo "Workflow tested! Hope received mail notification"
+              run: echo "Workflow tested! Hope received mail notification! Let's check your inbox"
