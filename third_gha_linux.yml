@@ -1,0 +1,14 @@
+---
+    name: Linux flavoured GitHub Action
+    on:
+      push:
+        branches:
+          - main
+    jobs:
+        check_linux:
+          runs-on: ubuntu-latest
+          steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: check OS version
+              run: lsb_release -a

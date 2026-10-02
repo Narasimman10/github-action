@@ -1,0 +1,57 @@
+name: workflow with mail notification
+on:
+    push:
+        branches: main
+
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout repo
+              uses: actions/checkout@v3
+
+            - name: send mail notification
+              run: echo "Sending mail notification"
+
+            - name: Send mail on Workflow success
+              if: success()
+              uses: dawidd6/action-send-mail@v3
+              with:
+                  server_address: smtp.google.com
+                  server_port: 587
+                  username: ${{ secrets.EMAIL_USERNAME }}
+                  password: ${{ secrets.EMAIL_PASSWORD }}
+                  subject: '✅ Workflow Completed Successfully'
+                  from: ${{ secrets.EMAIL_USERNAME }}
+                  to: ${{ secrets.EMAIL_TO }}
+                  body: |
+                      Workflow: ${{ github.workflow }}
+                      Status: Success ✅
+                      Repo: ${{ github.repository }}
+                      Branch: ${{ github.ref }}
+                      Commit: ${{ github.sha }}
+                      Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+
+            - name: Send mail on Workflow Failure
+              if: failure()
+              uses: dawidd6/action-send-mail@v3
+              with:
+                  server_address: smtp.google.com
+                  server_port: 587
+                  username: ${{ secrets.EMAIL_USERNAME }}
+                  password: ${{ secrets.EMAIL_PASSWROD }}
+                  subject: '❌ Workflow Failed'
+                  from: ${{ secrets.EMAIL_USERNAME }}
+                  to: ${{ secrets.EMAIL_TO }}
+                  body: |
+                      Workflow: ${{ github.workflow }}
+                      Status: Failed ❌
+                      Repo: ${{ github.repository }}
+                      Branch: ${{ github.ref }}
+                      Commit: ${{ github.sha }}
+                      Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            - name: Notification
+              run: echo "Workflow tested! Hope received mail notification"
