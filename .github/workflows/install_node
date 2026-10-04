@@ -1,0 +1,25 @@
+name: Lesson 1 - node js install
+
+run-name: Run of the complex workflow
+  
+on:
+  push:
+    branches: main
+  
+  pull-request:
+    branches: main
+    
+jobs:
+  test:
+    runs-on: ubuntu-latest	  
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      
+      - name: setup nodejs
+        uses: actions/setup-node@v7
+        with:
+          node-version: 18
+
+      - name: Run a node command
+        run: node -e "console.log('running from node!')"
